@@ -1,0 +1,45 @@
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	background-color: var(--bgColor);
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell,
+		'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+a,
+p {
+	font-size: 100%;
+	border: none;
+	outline: none;
+	color: var(--black);
+}
+button {
+	background-color: white;
+	cursor: pointer;
+}
+input {
+	border: none;
+	outline: none;
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

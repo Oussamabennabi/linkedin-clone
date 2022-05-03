@@ -1,0 +1,18 @@
+:root {
+	--bgColor: #f3f2ef;
+	--greyBg: #f9fafb;
+	--grey: hsla(0, 0%, 0%, 0.6);
+	--black: rgba(0, 0, 0, 0.9);
+	--blue:rgb(10, 102, 194);
+	--textbig:1rem;
+	--textSmall:0.8rem;
+	--lightGrey:#eef3f8;
+}
+.container {
+	padding-inline: 24px;
+}
+.container .content {
+	max-width: 1128px;
+	width: 100%;
+	margin: auto;
+}
