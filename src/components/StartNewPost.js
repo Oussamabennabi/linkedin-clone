@@ -96,5 +96,11 @@ const Container = styled.section`
         margin-right: .5rem;
       }
     }
+    @media screen and (max-width: 460px) {
+      button {
+        padding: .2rem;
+      }
+      
+    }
   }
 `

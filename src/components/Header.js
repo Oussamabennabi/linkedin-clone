@@ -353,6 +353,11 @@ const Content = styled.div`
     .item {
       margin-inline: 2px;
     }
+  }
+  @media screen and (max-width:400px){
+    .item {
+      width: 38px;
+    }
     
   }
 `

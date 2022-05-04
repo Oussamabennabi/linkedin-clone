@@ -26,14 +26,14 @@ const Home = () => {
 							Sort by: <b>Top ▼</b>
 						</small>
 					</div>
-					{isLoading && <img src='/images/loading.gif' width={'100%'} style={{borderRadius:".6rem"}}/>}
-					{posts && posts.map((post,i) => (
-						<PostCard
+					{isLoading && <img src='/images/loading.gif' width={'100%'} style={{ borderRadius: ".6rem" }} />}
+					{posts && posts.map((post, i) => {
+						return < PostCard
 							key={i}
 							name={post.userName}
 							followers={post.followers}
 							description={post.description}
-							photo={post.userPhotoUrl}
+							userPhotoURL={post.userPhotoUrl}
 							likes={post.likes}
 							shares={post.shares}
 							comments={post.comments}
@@ -42,7 +42,7 @@ const Home = () => {
 							sharedVideo={post.sharedVideo}
 							sharedDocument={post.sharedDocument}
 						/>
-					))}
+					})}
 					<RecomandedPeople />
 
 				</Main>

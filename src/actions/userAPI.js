@@ -14,17 +14,13 @@ export function signInAPI() {
 		signInWithPopup(auth, provider)
 			.then((payload) => {
 				dispatch(USER_ACTIONS.setUser(payload.user));
-
-
 			})
 			.catch((err) => alert(err));
 	};
 }
-
 export function getUserAuth() {
 	return (dispatch) => {
 		onAuthStateChanged(auth, async (user) => {
-			console.log(user.uid)
 			if (!user) return;
 			dispatch(USER_ACTIONS.setUser(user));
 		});

@@ -4,8 +4,6 @@ import { BsThreeDots } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 const PostCard = ({
 	description,
-	photo,
-
 	comments,
 	sharedImage,
 	sharedVideo,
@@ -13,14 +11,15 @@ const PostCard = ({
 	likes,
 	followers,
 	shares,
+	userPhotoURL,
 	isPromoted,
 }) => {
-	const { userName, photoUrl } = useSelector((s) => s.user);
+	const { userName,  } = useSelector((s) => s.user);
 
 	return (
 		<Container>
 			<div className="post-info">
-				<img src={photoUrl} alt={userName} />
+				<img src={userPhotoURL} alt={userName} />
 				<div>
 					<span>
 						<h1>{userName}</h1>

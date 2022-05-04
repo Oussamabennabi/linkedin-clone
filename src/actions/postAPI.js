@@ -4,7 +4,7 @@ import {
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
-	
+
 } from 'firebase/storage';
 import {
 	collection,
@@ -153,10 +153,8 @@ export function writePostData({
 
 export function getPostData() {
 	return dispatch => {
-		// collectionRef.doc()
-		const q = query(collectionRef, orderBy("timestamp", "decs"))
-
-		onSnapshot(collectionRef, resp => {
+		const q = query(collectionRef, orderBy("timestamp", "desc"))
+		onSnapshot(q, resp => {
 			const data = resp.docs.map(item => item.data())
 			dispatch(POST_REDUCER_ACTIONS.setPostFromFirebase({ data }))
 		}
