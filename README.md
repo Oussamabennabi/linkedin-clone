@@ -6,7 +6,8 @@
 
 
 <div align='center'>
-  <img src='./project-screenshots/module.png'>
+  <img src="./project-screenshots/home.png"/>
+  <img src='./project-screenshots/module.png'/>
 </div>
 
 
