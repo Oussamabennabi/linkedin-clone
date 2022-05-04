@@ -12,8 +12,8 @@ import {
 	POST_ACTIONS,
 	POST_REDUCER_ACTIONS,
 } from '../../../store/postData-slice';
-import { setPostFiles, writePostData } from '../../../actions/postAPI';
-import { Firestore, serverTimestamp } from 'firebase/firestore';
+import {  writePostData } from '../../../actions/postAPI';
+import {  serverTimestamp } from 'firebase/firestore';
 const PostFooter = () => {
 	const dispatch = useDispatch();
 	const { editorText, photo, document, video } = useSelector((s) => s.postData);
@@ -55,7 +55,6 @@ const PostFooter = () => {
 					})
 				);
 				dispatch(MODULE_REDUCER_ACTIONS.hideModule());
-				// setPostData(POST_ACTIONS.text, editorText);
 				break;
 			case SELECTED_MODULE_ACTIONS.photo:
 				dispatch(

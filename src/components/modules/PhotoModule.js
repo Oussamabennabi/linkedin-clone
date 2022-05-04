@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { POST_ACTIONS, POST_REDUCER_ACTIONS } from '../../store/postData-slice'
 import styled from 'styled-components'
+import { VscChromeClose } from 'react-icons/vsc'
 const PhotoModule = () => {
 
   const dispatch = useDispatch()
@@ -20,13 +21,14 @@ const PhotoModule = () => {
         onChange={(e) => handleFileInputChange(e.target.files[0])}
         />
       }
-      {photo &&
+      {photo && <>
         <img src={URL.createObjectURL(photo)} alt='' />
+        <span onClick={() => dispatch(POST_REDUCER_ACTIONS.clearPost({ type: POST_ACTIONS.photo }))} className='close'><VscChromeClose /></span>
+      </>
       }
     </Container>
   )
 }
-
 export default PhotoModule
 
 const Container = styled.div`
@@ -65,6 +67,25 @@ const Container = styled.div`
     }
     input:hover::before {
       background-color: rgba(10, 102, 194,.2);
+    }
+      span.close {
+      position: absolute;
+      top: 10px;
+      border-radius: 50%;
+      right: 10px;
+      background-color: rgba(0,0,0,.5);
+      cursor: pointer;
+      padding: 5px;
+      display: flex;
+
+      transition: all .13s ease-in-out;
+      &:hover {
+      background-color: rgba(0,0,0,.8);
+      }
+      svg {
+        color: white;
+        font-size: 20px;
+      }
     }
   
 

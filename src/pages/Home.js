@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import RightSideBar from '../components/RightSideBar';
@@ -6,8 +6,15 @@ import LeftSideBar from '../components/LeftSideBar';
 import StartNewPost from '../components/StartNewPost';
 import RecomandedPeople from '../components/RecomandedPeople';
 import PostCard from '../components/PostCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostData } from '../actions/postAPI';
 
 const Home = () => {
+	const { isLoading, posts } = useSelector(s => s.postData)
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(getPostData())
+	}, [dispatch])
 	return (
 		<Container className="container">
 			<Content className="content">
@@ -19,19 +26,25 @@ const Home = () => {
 							Sort by: <b>Top ▼</b>
 						</small>
 					</div>
+					{isLoading && <img src='/images/loading.gif' width={'100%'} style={{borderRadius:".6rem"}}/>}
+					{posts && posts.map((post,i) => (
+						<PostCard
+							key={i}
+							name={post.userName}
+							followers={post.followers}
+							description={post.description}
+							photo={post.userPhotoUrl}
+							likes={post.likes}
+							shares={post.shares}
+							comments={post.comments}
+							Promoted={false}
+							sharedImage={post.sharedImage}
+							sharedVideo={post.sharedVideo}
+							sharedDocument={post.sharedDocument}
+						/>
+					))}
 					<RecomandedPeople />
-					{/* <PostCard
-            logo="/images/users/user1.jpeg"
-            name="Annertech"
-            followers="1.4k"
-            description="Calling all #Drupal Developers! If you want to work with a great team on exciting and challenging projects, in a supportive and relaxed environment, then you've come to the right place.
-See https://lnkd.in/eBjKk2r #remotework #remoteteams #remotejobs"
-            photo="/images/icons/user.svg"
-            likes="77"
-            shares="23"
-            comments="7"
-            Promoted={true}
-          /> */}
+
 				</Main>
 				<RightSideBar />
 			</Content>

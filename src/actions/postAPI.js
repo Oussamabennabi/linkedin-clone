@@ -1,5 +1,5 @@
 import db, { storage } from '../firebase';
-import { POST_ACTIONS, POST_REDUCER_ACTIONS } from '../store/postData-slice';
+import {  POST_REDUCER_ACTIONS } from '../store/postData-slice';
 import {
 	getStorage,
 	ref,
@@ -14,41 +14,11 @@ import {
 	deleteDoc,
 	getDocs,
 	doc,
+	query,
+	orderBy,
+	onSnapshot,
 } from 'firebase/firestore';
-
-export function setPostFiles(fileType, fileData) {
-	let storageRef;
-	switch (fileType) {
-		case POST_ACTIONS.text:
-			break;
-		case POST_ACTIONS.photo:
-			storageRef = ref(storage, 'images');
-			break;
-		case POST_ACTIONS.video:
-			storageRef = ref(storage, 'videos');
-			break;
-
-		default:
-			break;
-	}
-	const uploadTask = uploadBytesResumable(storageRef, fileData);
-	uploadTask.on(
-		'state_changed',
-		(snapshot) => {
-			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-			POST_REDUCER_ACTIONS.setLoading(true);
-			console.log('Upload is ' + progress + '% done');
-		},
-		(error) => {
-			console.log(error.message);
-		},
-		() => {
-			getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-				console.log('File available at', downloadURL);
-			});
-		}
-	);
-}
+const collectionRef = collection(db, 'Posts');
 
 export function writePostData({
 	description,
@@ -62,9 +32,6 @@ export function writePostData({
 	likes,
 }) {
 	return (dispatch) => {
-		let imageDownloadURL = null;
-		let videoDownloadURL = null;
-		let documentDownloadURL = null;
 		if (sharedImage) {
 			const imagesRef = ref(storage, `images/${sharedImage.name}`);
 			const uploadTask = uploadBytesResumable(imagesRef, sharedImage);
@@ -73,19 +40,29 @@ export function writePostData({
 				(snapshot) => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					dispatch(POST_REDUCER_ACTIONS.setLoading(true))
 					console.log('Upload is ' + progress + '% done');
 				},
 				(error) => {
 					console.log(error);
 				},
-				() => {
-					imageDownloadURL =  getDownloadURL(uploadTask.snapshot.ref).then(
-            (downloadURL) => {
-              
+				async () => {
+					const imageDownloadURL = await getDownloadURL(uploadTask.snapshot.ref).then(
+						(downloadURL) => {
 							return downloadURL;
 						}
-          );
-          console.log('fkgjfkgjfkgjfkgjfkgj    ', imageDownloadURL);
+					);
+					addDoc(collectionRef, {
+						description,
+						sharedImage: imageDownloadURL,
+						userName,
+						userPhotoUrl,
+						timestamp,
+						comments: 0,
+						likes: 6,
+					});
+					dispatch(POST_REDUCER_ACTIONS.setLoading(false))
+
 				}
 			);
 		}
@@ -97,18 +74,28 @@ export function writePostData({
 				(snapshot) => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					dispatch(POST_REDUCER_ACTIONS.setLoading(true))
 					console.log('Upload is ' + progress + '% done');
 				},
 				(error) => {
 					console.log(error);
 				},
-				() => {
-					videoDownloadURL = getDownloadURL(uploadTask.snapshot.ref).then(
+				async () => {
+					const videoDownloadURL = await getDownloadURL(uploadTask.snapshot.ref).then(
 						(downloadURL) => {
-							console.log(downloadURL);
 							return downloadURL;
 						}
 					);
+					addDoc(collectionRef, {
+						description,
+						sharedVideo: videoDownloadURL,
+						userName,
+						userPhotoUrl,
+						timestamp,
+						comments: 0,
+						likes: 6,
+					});
+					dispatch(POST_REDUCER_ACTIONS.setLoading(false))
 				}
 			);
 		}
@@ -120,33 +107,42 @@ export function writePostData({
 				(snapshot) => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					dispatch(POST_REDUCER_ACTIONS.setLoading(true))
 					console.log('Upload is ' + progress + '% done');
 				},
 				(error) => {
 					console.log(error);
 				},
-				() => {
-					documentDownloadURL = getDownloadURL(uploadTask.snapshot.ref).then(
+				async () => {
+					const documentDownloadURL = await getDownloadURL(uploadTask.snapshot.ref).then(
 						(downloadURL) => {
-							console.log(downloadURL);
 							return downloadURL;
 						}
 					);
+					addDoc(collectionRef, {
+						description,
+						sharedDocument: documentDownloadURL,
+						userName,
+						userPhotoUrl,
+						timestamp,
+						comments: 0,
+						likes: 6,
+					});
+					dispatch(POST_REDUCER_ACTIONS.setLoading(false))
 				}
 			);
 		}
-		console.log(`hkgjbgjb ${imageDownloadURL}`);
-		const collectionRef = collection(db, 'Posts');
-		addDoc(collectionRef, {
-			description,
-			sharedImage: imageDownloadURL ? imageDownloadURL : null,
-			sharedDocument: documentDownloadURL ? documentDownloadURL : null,
-			sharedVideo: videoDownloadURL ? videoDownloadURL : null,
-			userName,
-			userPhotoUrl,
-			timestamp,
-			comments: 0,
-			likes: 6,
-		});
 	};
+}
+
+export function getPostData() {
+	return dispatch => {
+		const q = query(collectionRef, orderBy("timestamp", "decs"))
+		onSnapshot(collectionRef, resp => {
+			const data = resp.docs.map(item => item.data())
+			
+			dispatch(POST_REDUCER_ACTIONS.setPostFromFirebase({data}))
+		}
+		)
+	}
 }

@@ -25,16 +25,16 @@ const MainModule = () => {
         value={editorText}
         onChange={(e) => dispatch(POST_REDUCER_ACTIONS.setPostData({ type: POST_ACTIONS.text, data: e.target.value }))}
         placeholder='What do you want to talk about?' />
-      {showPhoto &&
+      {showPhoto && !showVideo && 
         <div className='img-video-container'>
           <img src={URL.createObjectURL(photo)} />
-          <span onClick={() => dispatch(POST_REDUCER_ACTIONS.clearPost({ type: POST_ACTIONS.photo }))} className='close-photo'><VscChromeClose /></span>
+          <span onClick={() => dispatch(POST_REDUCER_ACTIONS.clearPost({ type: POST_ACTIONS.photo }))} className='close'><VscChromeClose /></span>
         </div>
       }
-      {showVideo &&
+      {showVideo && !showPhoto &&
         <div className='img-video-container'>
           <video src={URL.createObjectURL(video)} />
-          <span onClick={() => dispatch(POST_REDUCER_ACTIONS.clearPost({ type: POST_ACTIONS.video }))} className='close-photo'><VscChromeClose /></span>
+          <span onClick={() => dispatch(POST_REDUCER_ACTIONS.clearPost({ type: POST_ACTIONS.video }))} className='close'><VscChromeClose /></span>
         </div>
       }
 
@@ -114,7 +114,7 @@ const Container = styled.main`
       aspect-ratio: 16/9;
       outline: 1px solid rgba(0,0,0,.07);
     }
-    span {
+    span.close {
       position: absolute;
       top: 10px;
       border-radius: 50%;

@@ -5,6 +5,8 @@ import { MODULE_REDUCER_ACTIONS } from '../store/module-slice'
 
 const StartNewPost = () => {
   const { photoUrl } = useSelector(s => s.user)
+  const { isLoading } = useSelector(s => s.postData)
+
 const dispatch = useDispatch()
   return (
     <Container>
@@ -13,6 +15,7 @@ const dispatch = useDispatch()
         <button
           onClick={()=>dispatch(MODULE_REDUCER_ACTIONS.showModule())}
           className='post-btn'
+          disabled={isLoading}
         >Start a post</button>
       </div>
       <div className='icons'>
@@ -51,7 +54,6 @@ const Container = styled.section`
     .post-btn {
       width: 100%;
       margin-right: .7rem;
-
       border-radius: 2rem;
       text-align: left;
       border:1px solid  rgba(0,0,0,0.2);
@@ -64,6 +66,9 @@ const Container = styled.section`
       &:hover {
         background-color: rgba(0,0,0,0.06);
       }
+    }
+    .post-btn:disabled {
+      cursor: not-allowed;
     }
   }
   .icons {

@@ -3,11 +3,7 @@ const initialState = {
   isSignedIn: false,  
   userName: "",
   photoUrl: ""
-
-
 }
-
-
 const userSlice = createSlice({
   name: "user",
   initialState,

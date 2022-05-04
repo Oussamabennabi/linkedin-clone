@@ -13,12 +13,13 @@ import VideoModule from './VideoModule'
 import PostFooter from './modules-components/PostFooter'
 import PostHeader from './modules-components/PostHeader'
 import AreYouSureAboutThat from './modules-components/AreYouSureAboutThat'
+import { POST_ACTIONS, POST_REDUCER_ACTIONS } from '../../store/postData-slice'
 
 
 const PostModule = () => {
   const dispatch = useDispatch()
   const { isHidden, selectedModule } = useSelector(s => s.module)
-  
+
 
 
   document.body.style.overflowY = isHidden ? '' : 'hidden'
@@ -26,6 +27,7 @@ const PostModule = () => {
   const handleClickOutside = useCallback((event) => {
     if (moduleRef.current && !moduleRef.current.contains(event.target)) {
       dispatch(MODULE_REDUCER_ACTIONS.hideModule())
+
     }
   }, [moduleRef, dispatch])
   useEffect(() => {
@@ -34,7 +36,9 @@ const PostModule = () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, [handleClickOutside]);
-
+  if (isHidden) {
+    dispatch(POST_REDUCER_ACTIONS.clearPost({type:POST_ACTIONS.clearAll}))
+  }
   return (
     <>
       {!isHidden &&
@@ -54,10 +58,8 @@ const PostModule = () => {
               }
             </PostBody>
             <PostFooter />
-
             {/* <AreYouSureAboutThat/> */}
           </Container>
-
         </Wrrapper>
       }
     </>

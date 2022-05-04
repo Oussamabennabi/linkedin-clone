@@ -4,9 +4,12 @@ import { BsThreeDots } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 const PostCard = ({
 	description,
-  photo,
-  video,
+	photo,
+
 	comments,
+	sharedImage,
+	sharedVideo,
+	sharedDocument,
 	likes,
 	followers,
 	shares,
@@ -29,10 +32,9 @@ const PostCard = ({
 			</div>
 			<div className="description">{description}</div>
 			<div className="thumb">
-				{photo && <img src={URL.createObjectURL(photo)} alt={photo.name} />}
-				{video && (
-					<video controls src={URL.createObjectURL(video)}>
-						{/* <p>{video.name}</p> */}
+				{sharedImage && <img src={sharedImage} />}
+				{sharedVideo && (
+					<video controls src={sharedVideo}>
 					</video>
 				)}
 			</div>

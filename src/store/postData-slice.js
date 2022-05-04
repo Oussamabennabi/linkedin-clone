@@ -9,6 +9,7 @@ const initialState = {
 	document: null,
 	showDocument: false,
 	isLoading: false,
+	posts: []
 };
 
 export const POST_ACTIONS = {
@@ -73,6 +74,9 @@ const postDataSlice = createSlice({
 		setLoading(state, action) {
 			state.isLoading = action.payload;
 		},
+		setPostFromFirebase(state, action) {
+			state.posts = action.payload.data
+		}
 	},
 });
 
