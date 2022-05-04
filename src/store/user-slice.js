@@ -2,15 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isSignedIn: false,  
   userName: "",
-  photoUrl: ""
+  photoUrl: "",
+  userId: ''
 }
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setUser(state, action) {
-      const {photoURL, displayName} = action.payload
+      const {photoURL, displayName,uid} = action.payload
       state.userName = displayName
+      state.userId = uid
       state.photoUrl = photoURL
       state.isSignedIn = true
     },

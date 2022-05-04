@@ -1,11 +1,10 @@
 import db, { storage } from '../firebase';
 import { POST_REDUCER_ACTIONS } from '../store/postData-slice';
 import {
-	getStorage,
 	ref,
 	uploadBytesResumable,
 	getDownloadURL,
-	uploadBytes,
+	
 } from 'firebase/storage';
 import {
 	collection,
@@ -21,6 +20,7 @@ import {
 const collectionRef = collection(db, 'Posts');
 
 export function writePostData({
+	userId,
 	description,
 	sharedImage,
 	sharedDocument,
@@ -54,6 +54,7 @@ export function writePostData({
 						}
 					);
 					addDoc(collectionRef, {
+						userId,
 						description,
 						sharedImage: imageDownloadURL,
 						userName,
@@ -88,6 +89,7 @@ export function writePostData({
 						}
 					);
 					addDoc(collectionRef, {
+						userId,
 						description,
 						sharedVideo: videoDownloadURL,
 						userName,
@@ -121,6 +123,7 @@ export function writePostData({
 						}
 					);
 					addDoc(collectionRef, {
+						userId,
 						description,
 						sharedDocument: documentDownloadURL,
 						userName,
@@ -135,6 +138,7 @@ export function writePostData({
 		}
 		else {
 			addDoc(collectionRef, {
+				userId,
 				description,
 				userName,
 				userPhotoUrl,
@@ -149,10 +153,11 @@ export function writePostData({
 
 export function getPostData() {
 	return dispatch => {
+		// collectionRef.doc()
 		const q = query(collectionRef, orderBy("timestamp", "decs"))
+
 		onSnapshot(collectionRef, resp => {
 			const data = resp.docs.map(item => item.data())
-
 			dispatch(POST_REDUCER_ACTIONS.setPostFromFirebase({ data }))
 		}
 		)

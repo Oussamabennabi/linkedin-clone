@@ -18,7 +18,7 @@ const PostFooter = () => {
 	const dispatch = useDispatch();
 	const { editorText, photo, document, video } = useSelector((s) => s.postData);
 	const { selectedModule } = useSelector((s) => s.module);
-	const { userName, photoUrl } = useSelector((s) => s.user);
+	const { userName, photoUrl,userId } = useSelector((s) => s.user);
 	function handlDisableButton() {
 		switch (selectedModule) {
 			case SELECTED_MODULE_ACTIONS.main:
@@ -35,7 +35,8 @@ const PostFooter = () => {
 	}
   function handleSubmit(e) {
     if (e.target.innerText === "Post") {
-      const payload = {
+			const payload = {
+				userId,
 				description: editorText,
 				sharedImage: photo ? photo : null,
 				sharedDocument: document ? document : null,
