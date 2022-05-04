@@ -1,5 +1,5 @@
 import db, { storage } from '../firebase';
-import {  POST_REDUCER_ACTIONS } from '../store/postData-slice';
+import { POST_REDUCER_ACTIONS } from '../store/postData-slice';
 import {
 	getStorage,
 	ref,
@@ -32,6 +32,7 @@ export function writePostData({
 	likes,
 }) {
 	return (dispatch) => {
+
 		if (sharedImage) {
 			const imagesRef = ref(storage, `images/${sharedImage.name}`);
 			const uploadTask = uploadBytesResumable(imagesRef, sharedImage);
@@ -66,7 +67,7 @@ export function writePostData({
 				}
 			);
 		}
-		if (sharedVideo) {
+		else if (sharedVideo) {
 			const videosRef = ref(storage, `videos/${sharedVideo.name}`);
 			const uploadTask = uploadBytesResumable(videosRef, sharedVideo);
 			uploadTask.on(
@@ -99,7 +100,7 @@ export function writePostData({
 				}
 			);
 		}
-		if (sharedDocument) {
+		else if (sharedDocument) {
 			const documentsRef = ref(storage, `documents/${sharedDocument.name}`);
 			const uploadTask = uploadBytesResumable(documentsRef, sharedDocument);
 			uploadTask.on(
@@ -132,6 +133,17 @@ export function writePostData({
 				}
 			);
 		}
+		else {
+			addDoc(collectionRef, {
+				description,
+				userName,
+				userPhotoUrl,
+				timestamp,
+				comments: 0,
+				likes: 6,
+			});
+		}
+
 	};
 }
 
@@ -140,8 +152,8 @@ export function getPostData() {
 		const q = query(collectionRef, orderBy("timestamp", "decs"))
 		onSnapshot(collectionRef, resp => {
 			const data = resp.docs.map(item => item.data())
-			
-			dispatch(POST_REDUCER_ACTIONS.setPostFromFirebase({data}))
+
+			dispatch(POST_REDUCER_ACTIONS.setPostFromFirebase({ data }))
 		}
 		)
 	}
