@@ -12,7 +12,6 @@ import { getPostData } from '../actions/postAPI';
 const Home = () => {
 	const { isLoading, posts } = useSelector(s => s.postData)
 	const dispatch = useDispatch()
-	alert("You can add a post and be saved");
 	useEffect(() => {
 		dispatch(getPostData())
 	}, [dispatch])
